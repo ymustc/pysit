@@ -25,3 +25,7 @@ python setup.py install
 ```
 
 You can checked wether the installation is ok by running examples.
+
+Troubleshooting
+---------------
+ We experienced troubles on OSX Yosemite at building time, openMP was not supported by clang. To solve that problem, we installed gcc5 with Homebrew.  
