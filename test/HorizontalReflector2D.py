@@ -93,6 +93,7 @@ if __name__ == '__main__':
 
     obj_vals = np.array([v for k,v in invalg.objective_history.items()])
 
+
     plt.figure()
     plt.semilogy(obj_vals)
 
@@ -102,12 +103,25 @@ if __name__ == '__main__':
     plt.figure()
     plt.subplot(3,1,1)
     vis.plot(C0, m, clim=clim)
+    plt.colorbar()
     plt.title('Initial Model')
     plt.subplot(3,1,2)
     vis.plot(C, m, clim=clim)
     plt.title('True Model')
+    plt.colorbar()
     plt.subplot(3,1,3)
     vis.plot(result.C, m, clim=clim)
     plt.title('Reconstruction')
+    plt.colorbar()
+
+    plt.figure()
+    plt.subplot(2,1,1)
+    vis.plot(result.C-C0, m)
+    plt.title('Recon - Initial')
+    plt.colorbar()
+    plt.subplot(2,1,2)
+    vis.plot(C-result.C, m)
+    plt.title('True-Recon')	
+    plt.colorbar()
 
     plt.show()

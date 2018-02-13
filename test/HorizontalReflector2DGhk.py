@@ -19,7 +19,7 @@ if __name__ == '__main__':
 
     d = RectangularDomain(x_config, z_config)
 
-    m = CartesianMesh(d, 91, 71)
+    m = CartesianMesh(d, 40, 30)
 
     #   Generate true wave speed
     C, C0, m, d = horizontal_reflector(m)
@@ -58,7 +58,8 @@ if __name__ == '__main__':
 
     print 'Data generation: {0}s'.format(time.time()-tt)
 
-    objective = TemporalLeastSquares(solver)
+#    objective = TemporalLeastSquares(solver)
+    objective = TemporalGhk(solver, m.deltas[0])
 
     # Define the inversion algorithm
     invalg = LBFGS(objective)
@@ -82,7 +83,7 @@ if __name__ == '__main__':
                             'alpha_frequency'           : 1,
                             }
 
-#   line_search = ('constant', 1e-16)
+    #line_search = ('constant', 1e-16)
     line_search = 'backtrack'
 
     result = invalg(shots, initial_value, nsteps,
@@ -103,11 +104,25 @@ if __name__ == '__main__':
     plt.subplot(3,1,1)
     vis.plot(C0, m, clim=clim)
     plt.title('Initial Model')
+    plt.colorbar()
     plt.subplot(3,1,2)
     vis.plot(C, m, clim=clim)
     plt.title('True Model')
+    plt.colorbar()
     plt.subplot(3,1,3)
     vis.plot(result.C, m, clim=clim)
     plt.title('Reconstruction')
+    plt.colorbar()
 
+    plt.figure()
+    plt.subplot(2,1,1)
+    vis.plot(result.C-C0, m)
+    plt.title('Recon - Initial')
+    plt.colorbar()
+    plt.subplot(2,1,2)
+    vis.plot(C-result.C, m)
+    plt.title('True-Recon')	
+    plt.colorbar()			
+    
+    
     plt.show()

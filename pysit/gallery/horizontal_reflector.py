@@ -107,8 +107,11 @@ class HorizontalReflectorModel(GeneratedGalleryModel):
 
         dC = self._build_reflectors()
 
-        self._initial_model = C0
+        initial_model_scaling = 1.0
+        self._initial_model = initial_model_scaling*C0
+        print('Initial model is %f *C0' %initial_model_scaling)
         self._true_model = C0 + dC
+        print('True model is C0 + dC0')
 
     def _build_reflectors(self):
 

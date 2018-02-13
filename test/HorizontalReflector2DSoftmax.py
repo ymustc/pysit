@@ -58,7 +58,8 @@ if __name__ == '__main__':
 
     print 'Data generation: {0}s'.format(time.time()-tt)
 
-    objective = TemporalLeastSquares(solver)
+#    objective = TemporalLeastSquares(solver)
+    objective = TemporalLeastSquaresSoftmax(solver)
 
     # Define the inversion algorithm
     invalg = LBFGS(objective)
@@ -82,7 +83,7 @@ if __name__ == '__main__':
                             'alpha_frequency'           : 1,
                             }
 
-#   line_search = ('constant', 1e-16)
+    #line_search = ('constant', 1e-16)
     line_search = 'backtrack'
 
     result = invalg(shots, initial_value, nsteps,
@@ -110,4 +111,13 @@ if __name__ == '__main__':
     vis.plot(result.C, m, clim=clim)
     plt.title('Reconstruction')
 
+    plt.figure()
+    plt.subplot(2,1,1)
+    vis.plot(result.C-C0, m)
+    plt.title('Recon - Initial')
+    plt.subplot(2,1,2)
+    vis.plot(C-result.C, m)
+    plt.title('True-Recon')				
+    
+    
     plt.show()
