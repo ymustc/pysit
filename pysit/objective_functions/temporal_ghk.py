@@ -27,10 +27,11 @@ class TemporalGhk(ObjectiveFunctionBase):
         self.imaging_period = int(imaging_period) #Needs to be an integer
         self.ghk_epsilon = 0.1
         self.ghk_lamb1 = 10.
-        self.ghk_lamb2 = 10.
+        self.ghk_lamb2 = 1.
         self.ghk_niter = 999
         self.ghk_dt = solver.dt
         self.ghk_dx = dx
+        
         #self.ghk_nt = 1801
         #self.ghk_nx = 91
 
@@ -194,11 +195,11 @@ class TemporalGhk(ObjectiveFunctionBase):
         # Compute the residual vector by interpolating the measured data to the
         # timesteps used in the previous forward modeling stage.
         # resid = map(lambda x,y: x.interpolate_data(self.solver.ts())-y, shot.gather(), retval['simdata'])
-        dataObs = shot.receivers.interpolate_data(self.solver.ts())
-        dataCal = retval['simdata']
+        self.dataObs = shot.receivers.interpolate_data(self.solver.ts())
+        self.dataCal = retval['simdata']
         
-        dataCalSoftmax, derivative_softmax_dataCal = self._softmax(dataCal)
-        dataObsSoftmax, derivative_softmax_dataObs = self._softmax(dataObs)
+        dataCalSoftmax, derivative_softmax_dataCal = self._softmax(self.dataCal)
+        dataObsSoftmax, derivative_softmax_dataObs = self._softmax(self.dataObs)
 
         #resid = dataObsSoftmax - dataCalSoftmax
         #adjoint_source_l2_softmax = - resid * derivative_softmax_dataCal 
