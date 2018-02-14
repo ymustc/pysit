@@ -30,4 +30,4 @@ Troubleshooting
 ---------------
  We experienced troubles on OSX Yosemite at building time, openMP was not supported by clang. To solve that problem, we installed gcc5 with Homebrew.
  
- On OSX with conda, the default available gcc4.8.5 solved the problem.
+ On OSX with conda4.4.10, the default available gcc4.8.5 solved the problem.
